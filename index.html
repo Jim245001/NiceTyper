@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特殊換行轉換 & 一鍵複製</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .textarea-container {
+            position: relative;
+            width: 95%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        textarea {
+            width: 100%;
+            height: 480px;
+            font-size: 17px;
+            line-height: 1.6;
+            border: none;
+            border-radius: 15px;
+            padding: 15px;
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            resize: none;
+            display: block;
+            font-family: 'jfOpenHuninn', sans-serif;
+        }
+
+        #charCount {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 14px;
+            color: #666;
+            /* 預設灰色 */
+            font-family: Arial, sans-serif;
+        }
+
+        /* 超過 500 字時變紅色 */
+        #charCount.exceed {
+            color: red;
+            font-weight: bold;
+        }
+
+
+        button {
+            padding: 0px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .convert-btn {
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .convert-btn.blue {
+            background-color: #007bff;
+            /* 藍色 */
+        }
+
+        .convert-btn.after {
+            background-color: #28a745;
+            /* 綠色 */
+        }
+
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        @font-face {
+            font-family: 'jfOpenHuninn';
+            src: url('fonts/jf-openhuninn-2.1.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>🔄 特殊換行轉換 & 一鍵複製 📋</h2>
+
+    <div>
+        <div class="textarea-container">
+            <textarea id="inputText" maxlength="500" placeholder="輸入有多行的文字..."></textarea>
+            <span id="charCount">0/500</span>
+        </div>
+        <button id="convertCopyBtn" class="convert-btn blue" onclick="convertAndCopy()">轉換並複製</button>
+        <div id="output" style="display:none;"></div> <!-- 隱藏顯示用輸出區，方便複製 -->
+
+    </div>
+
+
+    <script>
+        document.getElementById("inputText").addEventListener("input", function () {
+            let textLength = this.value.length;
+            let maxLength = 500;
+            let charCount = document.getElementById("charCount");
+
+            charCount.textContent = textLength + "/" + maxLength;
+
+            // 超過 500 字時變紅
+            if (textLength > maxLength) {
+                charCount.classList.add("exceed");
+            } else {
+                charCount.classList.remove("exceed");
+            }
+        });
+
+        function convertAndCopy() {
+            let input = document.getElementById("inputText").value;
+            let zeroWidthSpace = "\u200B";
+            let convertedText = input.replace(/\n\n/g, "\n" + zeroWidthSpace + "\n");
+
+            // 更新輸出區塊（可選）
+            let output = document.getElementById("output");
+            output.textContent = convertedText;
+
+            // 建立暫時 textarea 複製內容
+            let tempTextarea = document.createElement("textarea");
+            tempTextarea.value = convertedText;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextarea);
+
+            // 切換按鈕樣式
+            const btn = document.getElementById("convertCopyBtn");
+
+            // 變綠（.after），移除藍（.blue）
+            btn.classList.remove("blue");
+            btn.classList.add("after");
+            btn.textContent = "✅ 已轉換";
+            btn.disabled = true;
+
+            // 一秒後變回藍（.blue）與原本文字
+            setTimeout(() => {
+                btn.classList.remove("after");
+                btn.classList.add("blue");
+                btn.textContent = "轉換並複製";
+                btn.disabled = false;
+            }, 1000);
+        }
+    </script>
+
+
+
+</body>
+
+</html>

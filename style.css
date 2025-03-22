@@ -1,110 +1,131 @@
 body {
-    width: 100vw;
-    height: 100%;
-    overflow: hidden;   /* 🚫 禁止整頁上下滾動 */
-    overflow-x: hidden;
-    margin: 0;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
-  }
-  
-  /* ✅ 防止橫向捲動 */
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  h2 {
-    color: #333;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 20px;
-  }
-  
-  /* 包住輸入區塊的容器 */
-  .textarea-container {
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-    margin: 0 auto 15px auto;
-  }
-  
-  /* 輸入區塊本體 */
-  textarea {
-    overflow-y: auto;         /* ✅ 允許文字框上下捲動 */
-    width: 100%;
-    height: 320px;
-    font-size: 17px;
-    line-height: 1.6;
-    border: none;
-    border-radius: 15px;
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    resize: none;
-    font-family: 'jfOpenHuninn', sans-serif;
-    box-sizing: border-box;
-  }
-  
-  /* 字數顯示 */
-  #charCount {
-    position: absolute;
-    bottom: 10px;
-    right: 15px;
-    font-size: 14px;
-    color: #666;
-    font-family: Arial, sans-serif;
-    font-style: italic; /* ✅ 設定為斜體 */
-  }
-  
-  /* 字數過多提示紅色 */
-  #charCount.exceed {
-    color: red;
-    font-weight: bold;
-  }
-  
-  /* 按鈕設定 */
-  button {
-    width: 90%;
-    max-width: 500px;
-    padding: 14px;
-    font-size: 16px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 0 auto;
-    display: block;
-  }
-  
-  .convert-btn {
-    color: white;
-    transition: background-color 0.3s;
-  }
-  
-  .convert-btn.blue {
-    background-color: #007bff;
-  }
+  width: 100vw;
+  height: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  text-align: center;
+}
 
-  .convert-btn.orange {
-    background-color: #ff9800; /* 橘色 */
-  }
-  
-  .convert-btn.after {
-    background-color: #28a745;
-  }
-  
-  button:hover {
-    opacity: 0.9;
-  }
-  
-  /* 字體 */
-  @font-face {
-    font-family: 'jfOpenHuninn';
-    src: url('fonts/jf-openhuninn-2.1.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  color: #333;
+  font-size: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.textarea-container {
+  position: relative;
+  width: 90%;
+  max-width: 500px;
+  margin: 0 auto 0 auto;
+}
+
+textarea {
+  overflow-y: auto;
+  width: 100%;
+  height: 320px;
+  font-size: 17px;
+  line-height: 1.6;
+  border: none;
+  border-radius: 15px;
+  padding: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  resize: none;
+  font-family: 'jfOpenHuninn', sans-serif;
+  box-sizing: border-box;
+}
+
+#charCount {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  font-size: 14px;
+  color: #666;
+  font-family: Arial, sans-serif;
+  font-style: italic;
+}
+
+#charCount.exceed {
+  color: red;
+  font-weight: bold;
+}
+
+button {
+  width: 90%;
+  max-width: 500px;
+  padding: 14px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px auto;
+  display: block;
+}
+
+.convert-btn {
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.convert-btn.blue {
+  background-color: #007bff;
+}
+
+.convert-btn.orange {
+  background-color: #ff9800;
+}
+
+.convert-btn.after {
+  background-color: #28a745;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* 社群分析結果區 */
+.analysis-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 90%;
+  max-width: 500px;
+  margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.analysis-container h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #444;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.analysis-container div {
+  margin-bottom: 10px;
+  font-size: 15px;
+  color: #222;
+  font-family: 'jfOpenHuninn', sans-serif;
+}
+
+/* 字體 */
+@font-face {
+  font-family: 'jfOpenHuninn';
+  src: url('fonts/jf-openhuninn-2.1.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

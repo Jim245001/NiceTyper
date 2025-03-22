@@ -13,6 +13,40 @@ document.getElementById("inputText").addEventListener("input", function () {
     }
   });
   
+  function copyPromo() {
+    const promoText = `一個自由討論各種思想、個人想法、社會時事、讀書心得，並且有文字辯論賽制的地方。
+\u200B
+
+普通哲思社，歡迎你。
+加入時有任何問題私訊社長Jim。
+\u200B
+  
+https://discord.gg/r6mv8ew3X3`;
+  
+    const tempTextarea = document.createElement("textarea");
+    tempTextarea.value = promoText;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempTextarea);
+  
+    const btn = document.getElementById("copyPromoBtn");
+    btn.classList.remove("orange");
+    btn.classList.add("after");
+    btn.textContent = "✅ 已複製宣傳文";
+    btn.disabled = true;
+  
+    setTimeout(() => {
+      btn.classList.remove("after");
+      btn.classList.add("orange");
+      btn.textContent = "📋 複製宣傳文";
+      btn.disabled = false;
+    }, 1000);
+  }
+  
+
+
+
   function convertAndCopy() {
     let input = document.getElementById("inputText").value; // 取得輸入文字
     let zeroWidthSpace = "\u200B"; // 零寬空白字元

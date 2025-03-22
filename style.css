@@ -87,6 +87,10 @@ body {
   .convert-btn.blue {
     background-color: #007bff;
   }
+
+  .convert-btn.orange {
+    background-color: #ff9800; /* 橘色 */
+  }
   
   .convert-btn.after {
     background-color: #28a745;

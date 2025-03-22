@@ -1,41 +1,39 @@
 <!DOCTYPE html>
 <html lang="zh">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>特殊換行轉換 & 一鍵複製</title>
-  <link rel="stylesheet" href="style.css" /> <!-- 載入 CSS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <title>特殊換行轉換 & 一鍵複製 + NLP 分析</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
-  <h2 style="align-content:center">🔄 特殊換行轉換 & 一鍵複製 📋</h2>
+  <h2>🔄 特殊換行轉換 & 一鍵複製 📋</h2>
 
   <div>
-    <div class="textarea-container">
-      <textarea id="inputText" maxlength="500" placeholder="FB、IG、Threads自由換行器🪽"></textarea>
-      <span id="charCount">0 /500</span>
-    </div>
+    <textarea id="inputText" maxlength="500" placeholder="FB、IG、Threads自由換行器🪽"></textarea>
+    <div><span id="charCount">0 /500</span></div>
     <button id="convertCopyBtn" class="convert-btn blue" onclick="convertAndCopy()">轉換並複製</button>
-    <br/>
     <div id="output" style="display:none;"></div>
-    
   </div>
 
-  <!-- 社群短文分析結果區 -->
   <div class="analysis-container">
     <h3>🧠 社群短文分析結果</h3>
     <div id="ClarityScore">請輸入文字以分析</div>
     <div id="HookScore"></div>
     <div id="EngageScore"></div>
-    <div id="ToneScore"></div>
     <div id="ReadableScore"></div>
+    <div id="SentimentScore"></div> <!-- 情緒分析欄位 -->
   </div>
 
   <button id="copyPromoBtn" class="convert-btn orange" onclick="copyPromo()">📋 複製宣傳文</button>
 
-  <script src="script.js"></script> <!-- 載入 JS -->
+  <script type="module">
+    window.__transformers_fetch_mode = 'cdn';
+    import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.6.0';
+    window.pipeline = pipeline;
+    import './script.js';
+  </script>
+  
+  
 </body>
-
 </html>

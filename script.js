@@ -13,12 +13,7 @@ document.getElementById("inputText").addEventListener("input", function () {
 });
 
 function copyPromo() {
-  const promoText = `一個自由討論各種思想、個人想法、社會時事、讀書心得，並且有文字辯論賽制的地方。
-​
-普通哲思社，歡迎你。
-加入時有任何問題私訊社長Jim。
-​
-https://discord.gg/r6mv8ew3X3`;
+  const promoText = `https://discord.gg/r6mv8ew3X3`;
 
   const tempTextarea = document.createElement("textarea");
   tempTextarea.value = promoText;
@@ -72,72 +67,13 @@ function convertAndCopy() {
 
 function updateSocialMetrics(text) {
   const filler = [
-    "的",
-    "就是",
-    "自己",
-    "一下",
-    "有點",
-    "那種",
-    "其實",
-    "可能",
-    "應該",
-    "一些",
-    "然後",
-    "就是說",
-    "然後呢",
-    "基本上",
-    "就是呢",
-    "就是說呢",
-    "大概",
-    "差不多",
-    "這樣子",
-    "這個",
-    "那個",
-    "嗯",
-    "啊",
-    "嘛",
-    "啦",
-    "喔",
-    "欸",
-    "其實呢",
-    "感覺",
-    "有沒有",
-    "好像",
-    "有時候",
-    "偶爾",
-    "可能會",
-    "不一定",
-    "多少",
-    "稍微",
-    "有點點",
-    "略微",
-    "我覺得",
-    "我個人認為",
-    "我想要說",
-    "我會說",
-    "其實我覺得",
-    "坦白說",
-    "老實說",
-    "說真的",
-    "的話",
-    "來講",
-    "來說",
-    "上來說",
-    "方面來看",
-    "一方面",
-    "之類的",
-    "等等",
-    "等等之類的",
-    "或許",
-    "好像是",
-    "也許",
-    "可能是",
-    "也可能",
-    "也還算",
-    "也還好",
-    "不太",
-    "還算",
-    "算是",
+    "的", "就是", "自己", "一下", "有點", "那種", "其實", "可能", "應該", "一些",
+    "然後", "就是說", "然後呢", "基本上", "就是呢", "就是說呢", "大概", "差不多", "這樣子",
+    "這個", "那個", "嗯", "啊", "嘛", "啦", "喔", "欸", "其實呢", "感覺", "有沒有",
+    "好像", "有時候", "偶爾", "可能會", "不一定", "多少", "稍微", "有點點", "略微",
+    "我覺得", "我個人認為", "我想要說", "我會說", "其實我覺得", "坦白說", "老實說", "說真的",
+    "的話", "來講", "來說", "上來說", "方面來看", "一方面", "之類的", "等等", "等等之類的",
+    "或許", "好像是", "也許", "可能是", "也可能", "也還算", "也還好", "不太", "還算", "算是"
   ];
 
   if (text.trim().length === 0) {
@@ -145,16 +81,15 @@ function updateSocialMetrics(text) {
     return;
   }
 
-  const countOccurrences = (arr) =>
-    arr.reduce((sum, item) => sum + countText(text, item), 0);
+  const countOccurrences = (arr) => arr.reduce((sum, item) => sum + countText(text, item), 0);
   const clarityScore = countOccurrences(filler);
 
   const paragraphCount = text
-    .replace(/[\u200B\u200C\u200D\uFEFF]/g, "")
+    .replace(/[\u200B\u200C\u200D\uFEFF]/g, '')
     .trim()
-    .replace(/\r\n|\r|\n|\u2028/g, "\n")
+    .replace(/\r\n|\r|\n|\u2028/g, '\n')
     .split(/\n\s*\n+/)
-    .filter((p) => p.trim().length > 0).length;
+    .filter(p => p.trim().length > 0).length;
 
   const clarityInfo = getClarityLevel(clarityScore);
   updateScore(
@@ -167,15 +102,16 @@ function updateSocialMetrics(text) {
   );
 
   const totalChars = text.replace(/\s/g, "").length;
-  const paragraphInfo = getParagraphLevel(paragraphCount, totalChars);
-  updateScore(
-    "ReadableScore",
-    `段落數｜${paragraphInfo.label}`,
-    paragraphCount,
-    "（根據字數動態評估）",
-    paragraphInfo.level,
-    paragraphInfo.icon
-  );
+const paragraphInfo = getParagraphLevel(paragraphCount, totalChars);
+updateScore(
+  "ReadableScore",
+  `段落數｜${paragraphInfo.label}`,
+  paragraphCount,
+  "（根據字數動態評估）",
+  paragraphInfo.level,
+  paragraphInfo.icon
+);
+
 }
 
 function getClarityLevel(score) {
@@ -213,6 +149,7 @@ function getParagraphLevel(count, totalChars) {
   return { level: "bad", icon: "🧻", label: "段落過多" };
 }
 
+
 function updateScore(id, label, value, hint, level, icon = "✅") {
   const el = document.getElementById(id);
   el.className = `score-row ${level}`;
@@ -228,8 +165,7 @@ function showEmptyScores() {
 }
 
 function countText(text, keyword) {
-  let count = 0,
-    index = 0;
+  let count = 0, index = 0;
   while ((index = text.indexOf(keyword, index)) !== -1) {
     count++;
     index += keyword.length;

@@ -16,7 +16,7 @@ function copyPromo() {
   const promoText = `這是一隻討論各種議題的帳號
 叫做【普通哲思社】
 ​
-這裡有一個有比賽制度的社群
+這裡是一個有辯論比賽制度的社群
 歡迎加入！
 https://discord.gg/r6mv8ew3X3`;
 

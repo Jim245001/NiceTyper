@@ -1,39 +1,78 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>特殊換行轉換 & 一鍵複製</title>
-  <link rel="stylesheet" href="style.css" /> <!-- 載入 CSS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+  <title>Threads 手機排版預覽工具</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <h2 style="align-content:center">🔄 特殊換行轉換 & 一鍵複製 📋</h2>
+  <h2>📱 Threads 手機排版預覽工具</h2>
 
-  <div>
-    <div class="textarea-container">
-      <textarea id="inputText" maxlength="500" placeholder="FB、IG、Threads自由換行器🪽"></textarea>
-      <span id="charCount">0 /500</span>
-    </div>
-    <button id="convertCopyBtn" class="convert-btn blue" onclick="convertAndCopy()">轉換並複製</button>
-    <br/>
-    <div id="output" style="display:none;"></div>
-    
+  <!-- 編輯區 -->
+  <div class="textarea-container">
+    <textarea 
+      id="inputText" 
+      maxlength="500" 
+      placeholder="在這裡輸入你的 Threads 貼文內容...
+
+試試看多行文字
+看看排版效果如何 ✨
+
+#Threads #預覽工具"></textarea>
+    <span id="charCount">0 / 500</span>
   </div>
 
-  <!-- 社群短文分析結果區 -->
+  <!-- 按鈕區 -->
+  <button class="convert-btn after" id="copyBtn" onclick="copyText()">📋 複製文字</button>
+
+  <!-- 統計資訊區 -->
   <div class="analysis-container">
-    <h3>🧠 社群短文分析結果</h3>
-    <div id="ClarityScore">請輸入文字以分析</div>
-    <!-- <div id="HookScore"></div>
-    <div id="EngageScore"></div>
-    <div id="ToneScore"></div> -->
-    <div id="ReadableScore"></div>
+    <h3>📊 文字統計</h3>
+    <div id="wordCount">字數：0 字</div>
+    <div id="lineCount">行數：0 行</div>
+    <div id="hashtagCount">標籤：0 個</div>
   </div>
 
-  <script src="script.js"></script> <!-- 載入 JS -->
+  <!-- Threads 手機預覽區 -->
+  <div class="preview-section">
+    <h3>預覽效果</h3>
+    <div class="phone-mockup">
+      <div class="phone-screen">
+        <div class="threads-header">
+          <div class="threads-logo">threads</div>
+          <div class="settings-icon">⚙️</div>
+        </div>
+        
+        <div class="threads-post">
+          <div class="post-header">
+            <div class="avatar">你</div>
+            <div class="post-info">
+              <div class="username">your_username</div>
+            </div>
+          </div>
+          
+          <div class="post-content" id="previewContent">
+            在這裡會即時預覽你的貼文內容...
+          </div>
+
+          <div class="post-actions">
+            <button class="action-btn">❤️</button>
+            <button class="action-btn">💬</button>
+            <button class="action-btn">🔄</button>
+            <button class="action-btn">📤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 提示訊息 -->
+  <div class="toast" id="toast">已複製到剪貼簿！</div>
+
+  <script src="script.js"></script>
 </body>
 
 </html>

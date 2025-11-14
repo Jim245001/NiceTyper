@@ -56,7 +56,29 @@ function updateStats(text) {
   hashtagCount.textContent = `標籤：${hashtagNum} 個`;
 }
 
-// 複製文字到剪貼簿
+// 轉換並複製功能
+function convertAndCopy() {
+  const text = inputText.value;
+  
+  if (text.trim() === '') {
+    showToast('⚠️ 請先輸入內容');
+    return;
+  }
+
+  // 將連續的換行符號轉換，插入特殊空格（零寬空格）來保留格式
+  // 這樣在 Threads/IG/FB 貼上時才能保留空行
+  const convertedText = text.replace(/\n/g, '\n\u200B');
+  
+  // 複製轉換後的文字
+  navigator.clipboard.writeText(convertedText).then(() => {
+    showToast('✅ 已轉換並複製到剪貼簿！');
+  }).catch(err => {
+    // 如果 Clipboard API 失敗，使用舊方法
+    fallbackCopy(convertedText);
+  });
+}
+
+// 複製文字到剪貼簿（原始文字，不轉換）
 function copyText() {
   const text = inputText.value;
   

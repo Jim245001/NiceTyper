@@ -31,12 +31,26 @@
       <!-- 按鈕區 -->
       <button class="convert-btn blue" onclick="convertAndCopy()">🔄 轉換並複製</button>
 
+      <!-- 圖片上傳區 -->
+      <div class="image-upload-container">
+        <h3>📷 圖片上傳</h3>
+        <input type="file" id="imageInput" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)" />
+        <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
+          📁 選擇圖片
+        </button>
+        <p class="upload-hint">最多可上傳 10 張圖片</p>
+        
+        <!-- 圖片預覽區 -->
+        <div id="imagePreviewContainer" class="image-preview-grid"></div>
+      </div>
+
       <!-- 統計資訊區 -->
       <div class="analysis-container">
         <h3>📊 文字統計</h3>
         <div id="wordCount">字數：0 字</div>
         <div id="lineCount">行數：0 行</div>
         <div id="hashtagCount">標籤：0 個</div>
+        <div id="imageCount">圖片：0 張</div>
       </div>
     </div>
 
@@ -66,6 +80,9 @@
               <div class="post-content" id="previewContent">
                 在這裡會即時預覽你的貼文內容...
               </div>
+
+              <!-- 預覽區的圖片 -->
+              <div id="previewImages" class="preview-images"></div>
 
               <div class="post-actions">
                 <button class="action-btn">❤️</button>

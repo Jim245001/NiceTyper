@@ -157,6 +157,160 @@ button:active {
   font-family: Arial, sans-serif;
 }
 
+/* 圖片上傳區 */
+.image-upload-container {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+.image-upload-container h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #444;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.upload-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.upload-btn:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+.upload-hint {
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* 圖片預覽網格 */
+.image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.image-preview-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  background: #f0f0f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image-preview-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-remove-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-remove-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* 預覽區的圖片顯示 */
+.preview-images {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.preview-images.single {
+  grid-template-columns: 1fr;
+}
+
+.preview-images.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.preview-images.three {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.preview-images.three .preview-image-item:first-child {
+  grid-column: 1 / -1;
+}
+
+.preview-images.four {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.preview-image-item {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  background: #f0f0f0;
+  overflow: hidden;
+}
+
+.preview-image-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.preview-image-more {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 /* Threads 預覽區 */
 .preview-section {
   background-color: #fff;

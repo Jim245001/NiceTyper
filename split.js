@@ -1,173 +1,257 @@
-(function () {
-    "use strict";
-  
-    // 所有模組的定義會掛在這裡（模組 ID → function(module, exports, require)）
-    const modules = {};
-  
-    // 已加載過的模組快取（模組 ID → module object）
-    const cache = {};
-  
-    // chunk 的加載狀態（0: 已加載, [resolve, reject]: 加載中）
-    const chunkStatus = {
-      2272: 0,
-      256: 0
-    };
-  
-    // 延遲執行的 chunk 任務隊列
-    const deferredQueue = [];
-  
-    /**
-     * 自定義的 require 函式，模仿 CommonJS
-     * @param {number|string} moduleId
-     * @returns {*} module.exports
-     */
-    function require(moduleId) {
-      if (cache[moduleId]) {
-        return cache[moduleId].exports;
-      }
-  
-      const module = cache[moduleId] = {
-        id: moduleId,
-        loaded: false,
-        exports: {}
-      };
-  
-      try {
-        // 執行該模組定義函式，傳入模組物件
-        modules[moduleId].call(module.exports, module, module.exports, require);
-        module.loaded = true;
-      } catch (err) {
-        delete cache[moduleId];
-        throw err;
-      }
-  
-      return module.exports;
-    }
-  
-    // 掛上模組定義表
-    require.m = modules;
-  
-    /**
-     * 處理 chunk queue：根據 chunkIds 檢查是否可執行，並觸發對應 callback
-     * @param {*} result 回傳值
-     * @param {Array} chunkIds 要等待的 chunk ID
-     * @param {Function} fn 要執行的 callback
-     * @param {number} priority 優先順序
-     */
-    require.O = function(result, chunkIds, fn, priority) {
-      if (chunkIds) {
-        // 將新任務加到 queue
-        deferredQueue.push([chunkIds, fn, priority || 0]);
-        return;
-      }
-  
-      // 處理 queue：檢查有哪些任務可以執行
-      let bestPriority = Infinity;
-      for (let i = 0; i < deferredQueue.length; i++) {
-        const [chunks, callback, p] = deferredQueue[i];
-        const allLoaded = chunks.every(id => require.O.j(id));
-        if (allLoaded && p <= bestPriority) {
-          deferredQueue.splice(i--, 1);
-          const res = callback();
-          if (res !== undefined) result = res;
-        }
-      }
-  
-      return result;
-    };
-  
-    /**
-     * 判斷 chunk 是否已經加載完成
-     * @param {number} id
-     * @returns {boolean}
-     */
-    require.O.j = (id) => chunkStatus[id] === 0;
-  
-    /**
-     * 載入指定 chunk（支援 Promise）
-     * @param {number} chunkId
-     * @returns {Promise}
-     */
-    require.e = (chunkId) => {
-      return Promise.all(
-        Object.keys(require.f).reduce((promises, key) => {
-          require.f[key](chunkId, promises);
-          return promises;
-        }, [])
-      );
-    };
-  
-    /**
-     * 實際用 <script> 載入 chunk
-     * @param {string} url chunk 檔案位置
-     * @param {Function} callback 成功或失敗都會被呼叫
-     * @param {string} key chunk 名稱
-     * @param {number} chunkId chunk ID
-     */
-    require.l = function(url, callback, key, chunkId) {
-      const script = document.createElement('script');
-      script.charset = 'utf-8';
-      script.timeout = 120;
-      script.src = url;
-  
-      // 設定 timeout
-      let timer = setTimeout(() => {
-        script.onerror({ type: 'timeout', target: script });
-      }, 120000);
-  
-      // 成功或失敗都清掉 timeout
-      script.onload = () => {
-        clearTimeout(timer);
-        callback();
-      };
-  
-      script.onerror = () => {
-        clearTimeout(timer);
-        callback(new Error('Chunk load failed'));
-      };
-  
-      document.head.appendChild(script);
-    };
-  
-    /**
-     * 將匯出標示為 ES Module
-     * @param {object} exports
-     */
-    require.r = (exports) => {
-      if (typeof Symbol !== "undefined" && Symbol.toStringTag) {
-        Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
-      }
-      Object.defineProperty(exports, "__esModule", { value: true });
-    };
-  
-    // public path，例如 Webpack 要從哪個目錄載入 chunk
-    require.p = "/_next/";
-  
-    /**
-     * 預設載入 chunk 的方式：JavaScript chunks
-     * @param {number} chunkId
-     * @param {Array} promises
-     */
-    require.f = {};
-    require.f.j = function (chunkId, promises) {
-      if (chunkStatus[chunkId] !== 0) {
-        // 如果尚未載入，設為 Promise 並等待
-        promises.push(new Promise((resolve, reject) => {
-          chunkStatus[chunkId] = [resolve, reject];
-        }));
-      }
-    };
-  
-    /**
-     * 初始化：檢查是否已有 chunkQueue（全域變數 webpackChunk_N_E）
-     */
-    const chunkQueue = self.webpackChunk_N_E = self.webpackChunk_N_E || [];
-  
-    // 已有的 chunk 任務（可能來自其他 <script>），先跑一遍
-    chunkQueue.forEach((chunk) => require.O(undefined, chunk[0], chunk[1], chunk[2]));
-  
-    // 改寫 push 方法為 Webpack runtime 處理器
-    chunkQueue.push = (entry) => require.O(undefined, entry[0], entry[1], entry[2]);
-  
-  })();
-  
+:root {
+  --bg-color: #f0f2f5;
+  --phone-border: #e2e2e2;
+  --threads-black: #000000;
+  --threads-gray: #999999;
+  --accent-color: #0095f6;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* 版面容器：手機在中間，工具在旁邊 */
+.wysiwyg-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* --- 手機模擬區 (核心) --- */
+.phone-mockup {
+  width: 375px; /* 模擬 iPhone SE / mini 寬度 */
+  background: #fff;
+  border-radius: 30px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  border: 8px solid #333;
+  overflow: hidden;
+  position: relative;
+  height: 700px; /* 固定手機高度 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* 手機頂部狀態列 */
+.phone-status-bar {
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  background: #fff;
+  z-index: 10;
+}
+
+/* Threads Header */
+.threads-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  position: relative;
+}
+.threads-logo {
+  font-weight: bold;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+/* 貼文內容區 */
+.post-scroll-area {
+  flex: 1;
+  overflow-y: auto; /* 內容過長可捲動 */
+  padding: 0 16px;
+}
+
+.post-layout {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #333;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.post-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.username {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.time-ago {
+  color: var(--threads-gray);
+  font-weight: 400;
+}
+
+/* --- 核心編輯區 (Textarea 偽裝成普通文字) --- */
+#wysiwyg-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: inherit;
+  min-height: 100px;
+  margin-bottom: 10px;
+  background: transparent;
+  color: var(--threads-black);
+}
+
+#wysiwyg-input::placeholder {
+  color: var(--threads-gray);
+}
+
+/* 圖片預覽 */
+.preview-images-grid {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 10px;
+  /* 簡易的格狀排版邏輯 */
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.preview-images-grid img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+/* 底部互動按鈕 */
+.post-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  color: #333;
+}
+.action-icon {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* --- 右側工具欄 --- */
+.tools-sidebar {
+  width: 300px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  height: fit-content;
+}
+
+.tools-section {
+  margin-bottom: 24px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
+}
+.tools-section:last-child {
+  border: none;
+}
+
+.tools-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #000;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s;
+  margin-bottom: 8px;
+}
+
+.btn-primary {
+  background-color: var(--threads-black);
+  color: white;
+}
+.btn-primary:hover {
+  opacity: 0.8;
+}
+
+.btn-secondary {
+  background-color: #f0f0f0;
+  color: #333;
+}
+.btn-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: none;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, 20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}

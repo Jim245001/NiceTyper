@@ -4,103 +4,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Threads 手機排版預覽工具</title>
+  <title>Threads 所見即所得編輯器</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <h2>📱 Threads 手機排版預覽工具</h2>
 
-  <div class="main-container">
-    <!-- 左側：編輯區 -->
-    <div class="left-section">
-      <!-- 編輯區 -->
-      <div class="textarea-container">
-        <textarea 
-          id="inputText" 
-          maxlength="500" 
-          placeholder="在這裡輸入你的 Threads 貼文內容...
+  <h2>✨ Threads 所見即所得編輯器</h2>
 
-試試看多行文字
-看看排版效果如何 ✨
-
-#Threads #預覽工具"></textarea>
-        <span id="charCount">0 / 500</span>
+  <div class="wysiwyg-container">
+    
+    <div class="phone-mockup">
+      <div class="phone-status-bar">12:34</div>
+      
+      <div class="threads-header">
+        <div class="threads-logo">threads</div>
       </div>
 
-      <!-- 按鈕區 -->
-      <button class="convert-btn blue" onclick="convertAndCopy()">🔄 轉換並複製</button>
-
-      <!-- 圖片上傳區 -->
-      <div class="image-upload-container">
-        <h3>📷 圖片上傳</h3>
-        <input type="file" id="imageInput" accept="image/*" multiple style="display: none;" onchange="handleImageUpload(event)" />
-        <button class="upload-btn" onclick="document.getElementById('imageInput').click()">
-          📁 選擇圖片
-        </button>
-        <p class="upload-hint">最多可上傳 10 張圖片</p>
-        
-        <!-- 圖片預覽區 -->
-        <div id="imagePreviewContainer" class="image-preview-grid"></div>
-      </div>
-
-      <!-- 統計資訊區 -->
-      <div class="analysis-container">
-        <h3>📊 文字統計</h3>
-        <div id="wordCount">字數：0 字</div>
-        <div id="lineCount">行數：0 行</div>
-        <div id="hashtagCount">標籤：0 個</div>
-        <div id="imageCount">圖片：0 張</div>
-      </div>
-    </div>
-
-    <!-- 右側：預覽區 -->
-    <div class="right-section">
-      <!-- Threads 手機預覽區 -->
-      <div class="preview-section">
-        <h3>預覽效果</h3>
-        <p style="text-align: center; color: #666; font-size: 13px; margin-bottom: 15px;">
-          📱 模擬最窄手機顯示（iPhone SE / 13 mini）
-        </p>
-        <div class="phone-mockup">
-          <div class="phone-screen">
-            <div class="threads-header">
-              <div class="threads-logo">threads</div>
-              <div class="settings-icon">⚙️</div>
+      <div class="post-scroll-area">
+        <div class="post-layout">
+          <div class="avatar">你</div>
+          
+          <div class="post-body">
+            <div class="username">
+              your_username
+              <span class="time-ago">剛剛</span>
             </div>
-            
-            <div class="threads-post">
-              <div class="post-header">
-                <div class="avatar">你</div>
-                <div class="post-info">
-                  <div class="username">your_username</div>
-                </div>
-              </div>
-              
-              <div class="post-content" id="previewContent">
-                在這裡會即時預覽你的貼文內容...
-              </div>
 
-              <!-- 預覽區的圖片 -->
-              <div id="previewImages" class="preview-images"></div>
+            <textarea 
+              id="wysiwyg-input" 
+              placeholder="有什麼新鮮事？" 
+              oninput="autoResize(this); updateStats();"></textarea>
 
-              <div class="post-actions">
-                <button class="action-btn">❤️</button>
-                <button class="action-btn">💬</button>
-                <button class="action-btn">🔄</button>
-                <button class="action-btn">📤</button>
-              </div>
+            <div id="preview-images-container" class="preview-images-grid"></div>
+
+            <div class="post-actions">
+              <span class="action-icon">❤️</span>
+              <span class="action-icon">💬</span>
+              <span class="action-icon">🔄</span>
+              <span class="action-icon">📤</span>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="tools-sidebar">
+      
+      <div class="tools-section">
+        <div class="tools-title">📊 貼文統計</div>
+        <div class="stat-item">字數 <span class="stat-value" id="char-count">0 / 500</span></div>
+        <div class="stat-item">行數 <span class="stat-value" id="line-count">0</span></div>
+        <div class="stat-item">標籤 <span class="stat-value" id="tag-count">0</span></div>
+      </div>
+
+      <div class="tools-section">
+        <div class="tools-title">📷 媒體</div>
+        <input type="file" id="img-input" accept="image/*" multiple style="display: none;" onchange="handleImages(event)">
+        <button class="btn-secondary" onclick="document.getElementById('img-input').click()">+ 加入圖片</button>
+        <div style="font-size: 12px; color: #888; margin-top: 5px;">最多 10 張</div>
+      </div>
+
+      <div class="tools-section">
+        <div class="tools-title">⚙️ 操作</div>
+        <button class="btn-primary" onclick="copyText()">複製文字</button>
+        <button class="btn-secondary" onclick="clearAll()">清空內容</button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- 提示訊息 -->
-  <div class="toast" id="toast">已複製到剪貼簿！</div>
+  <div id="toast" class="toast">✅ 已複製文字！</div>
 
   <script src="script.js"></script>
 </body>
-
 </html>

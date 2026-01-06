@@ -1,20 +1,19 @@
 :root {
   --bg-color: #f0f2f5;
-  --phone-border: #e2e2e2;
   --threads-black: #000000;
   --threads-gray: #999999;
-  --accent-color: #0095f6;
 }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: var(--bg-color);
   margin: 0;
-  padding: 20px;
+  padding: 20px; /* 電腦版保留邊距 */
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+  box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
 }
 
 h2 {
@@ -23,31 +22,34 @@ h2 {
   color: #333;
 }
 
-/* 版面容器：手機在中間，工具在旁邊 */
 .wysiwyg-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-items: flex-start; /* 電腦版靠上對齊 */
   gap: 40px;
   width: 100%;
   max-width: 1000px;
 }
 
-/* --- 手機模擬區 (核心) --- */
+/* --- 手機模擬區 --- */
 .phone-mockup {
-  width: 375px; /* 模擬 iPhone SE / mini 寬度 */
+  /* ⚠️ 關鍵修改：讓寬度有彈性，完美適應手機螢幕 */
+  width: 100%; 
+  max-width: 375px; 
   background: #fff;
   border-radius: 30px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   border: 8px solid #333;
   overflow: hidden;
   position: relative;
-  height: 700px; /* 固定手機高度 */
+  height: 700px;
   display: flex;
   flex-direction: column;
+  /* 確保自己在容器內置中 */
+  margin: 0 auto; 
 }
 
-/* 手機頂部狀態列 */
 .phone-status-bar {
   height: 44px;
   display: flex;
@@ -59,24 +61,22 @@ h2 {
   z-index: 10;
 }
 
-/* Threads Header */
 .threads-header {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px 0;
-  position: relative;
 }
+
 .threads-logo {
   font-weight: bold;
   font-size: 20px;
   font-family: sans-serif;
 }
 
-/* 貼文內容區 */
 .post-scroll-area {
   flex: 1;
-  overflow-y: auto; /* 內容過長可捲動 */
+  overflow-y: auto;
   padding: 0 16px;
 }
 
@@ -86,16 +86,14 @@ h2 {
   margin-top: 10px;
 }
 
+/* 頭像樣式 */
 .avatar {
   width: 40px;
   height: 40px;
-  background: #333;
-  color: #fff;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
+  object-fit: cover;
+  background: #eee;
+  border: 1px solid rgba(0,0,0,0.1);
   flex-shrink: 0;
 }
 
@@ -119,7 +117,7 @@ h2 {
   font-weight: 400;
 }
 
-/* --- 核心編輯區 (Textarea 偽裝成普通文字) --- */
+/* 輸入框 */
 #wysiwyg-input {
   width: 100%;
   border: none;
@@ -128,34 +126,38 @@ h2 {
   font-size: 15px;
   line-height: 1.5;
   font-family: inherit;
-  min-height: 100px;
+  min-height: 24px;
   margin-bottom: 10px;
   background: transparent;
   color: var(--threads-black);
+  padding: 0;
 }
 
 #wysiwyg-input::placeholder {
   color: var(--threads-gray);
 }
 
-/* 圖片預覽 */
+/* 圖片預覽網格 */
 .preview-images-grid {
   display: grid;
   gap: 5px;
   margin-bottom: 10px;
-  /* 簡易的格狀排版邏輯 */
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.preview-images-grid .img-wrapper {
+  width: 100%;
+  aspect-ratio: 1/1;
 }
 
 .preview-images-grid img {
   width: 100%;
-  height: 150px;
+  height: 100%;
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #eee;
 }
 
-/* 底部互動按鈕 */
 .post-actions {
   display: flex;
   gap: 16px;
@@ -168,7 +170,7 @@ h2 {
   cursor: pointer;
 }
 
-/* --- 右側工具欄 --- */
+/* --- 側邊欄 (預設樣式) --- */
 .tools-sidebar {
   width: 300px;
   background: #fff;
@@ -183,17 +185,12 @@ h2 {
   border-bottom: 1px solid #eee;
   padding-bottom: 16px;
 }
-.tools-section:last-child {
-  border: none;
-}
+.tools-section:last-child { border: none; }
 
 .tools-title {
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .stat-item {
@@ -203,7 +200,6 @@ h2 {
   font-size: 14px;
   color: #555;
 }
-
 .stat-value {
   font-weight: bold;
   color: #000;
@@ -225,19 +221,14 @@ button {
   background-color: var(--threads-black);
   color: white;
 }
-.btn-primary:hover {
-  opacity: 0.8;
-}
+.btn-primary:hover { opacity: 0.8; }
 
 .btn-secondary {
   background-color: #f0f0f0;
   color: #333;
 }
-.btn-secondary:hover {
-  background-color: #e0e0e0;
-}
+.btn-secondary:hover { background-color: #e0e0e0; }
 
-/* Toast */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -248,10 +239,38 @@ button {
   padding: 10px 20px;
   border-radius: 20px;
   display: none;
-  animation: fadeIn 0.3s;
+  z-index: 1000;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translate(-50%, 20px); }
   to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* --- 📱 重點修改：手機版專用樣式 --- */
+@media screen and (max-width: 850px) {
+  body {
+    padding: 10px; /* 手機版減少邊距 */
+  }
+
+  .wysiwyg-container {
+    flex-direction: column; /* 改為直向排列 */
+    align-items: center;    /* 水平置中對齊 */
+    gap: 20px;
+  }
+
+  /* 手機模擬區在手機上 */
+  .phone-mockup {
+    width: 100%; /* 佔滿可用寬度 */
+    max-width: 100%; /* 防止超出螢幕 */
+    height: 75vh; /* 高度改為視窗高度的 75%，避免太長 */
+    border-width: 2px; /* 邊框變細，比較好看 */
+    border-radius: 20px;
+  }
+
+  /* 工具欄在手機上 */
+  .tools-sidebar {
+    width: 100%; /* 工具欄滿版 */
+    box-sizing: border-box; /* 確保 padding 不會撐爆寬度 */
+  }
 }

@@ -4,16 +4,21 @@
   --threads-gray: #999999;
 }
 
+/* 全域設定：確保邊框計算準確 */
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* 強制指定中文字體，確保 19 個全形字的寬度計算一致 */
+  font-family: "PingFang TC", "Microsoft JhengHei", "Heiti TC", -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--bg-color);
   margin: 0;
-  padding: 20px; /* 電腦版保留邊距 */
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  box-sizing: border-box; /* 確保 padding 不會撐大寬度 */
 }
 
 h2 {
@@ -22,32 +27,45 @@ h2 {
   color: #333;
 }
 
+/* --- 容器設定 (修正大空白的關鍵) --- */
 .wysiwyg-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start; /* 電腦版靠上對齊 */
-  gap: 40px;
+  
+  /* 讓「手機+工具欄」這個組合整體在螢幕中間 */
+  justify-content: center; 
+  
+  /* 靠上對齊 */
+  align-items: flex-start; 
+  
+  /* ⚠️ 兩者之間的間距設定為 20px (緊湊) */
+  gap: 20px;               
+  
   width: 100%;
   max-width: 1000px;
+  margin-top: 20px;
+  padding-bottom: 40px;
 }
 
-/* --- 手機模擬區 --- */
+/* --- 📱 手機模擬區 --- */
 .phone-mockup {
-  /* ⚠️ 關鍵修改：讓寬度有彈性，完美適應手機螢幕 */
-  width: 100%; 
-  max-width: 375px; 
+  /* ⚠️ 寬度 375px：完美容納 19 個全形字 + 3字元緩衝 */
+  width: 375px;
+  
+  /* ⚠️ 關鍵修正：將 margin 改為 0 */
+  /* 之前是 auto 會導致左右推擠產生大空白，現在改為 0 讓它乖乖貼近工具欄 */
+  margin: 0;
+  
   background: #fff;
   border-radius: 30px;
   box-shadow: 0 20px 40px rgba(0,0,0,0.1);
   border: 8px solid #333;
   overflow: hidden;
   position: relative;
-  height: 700px;
+  height: 680px;
   display: flex;
   flex-direction: column;
-  /* 確保自己在容器內置中 */
-  margin: 0 auto; 
+  flex-shrink: 0; /* 防止被擠壓 */
 }
 
 .phone-status-bar {
@@ -55,7 +73,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   background: #fff;
   z-index: 10;
@@ -77,19 +95,28 @@ h2 {
 .post-scroll-area {
   flex: 1;
   overflow-y: auto;
-  padding: 0 16px;
+  
+  /* ⚠️ 左右內距 10px，最大化文字空間 */
+  padding: 0 10px; 
+  
+  /* 隱藏滾動條 */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+.post-scroll-area::-webkit-scrollbar {
+  display: none;
 }
 
 .post-layout {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-top: 10px;
 }
 
-/* 頭像樣式 */
+/* 頭像 */
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   background: #eee;
@@ -101,11 +128,12 @@ h2 {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .username {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 4px;
   display: flex;
   justify-content: space-between;
@@ -115,22 +143,31 @@ h2 {
 .time-ago {
   color: var(--threads-gray);
   font-weight: 400;
+  font-size: 13px;
 }
 
-/* 輸入框 */
+/* --- 輸入框 --- */
 #wysiwyg-input {
   width: 100%;
   border: none;
   outline: none;
   resize: none;
-  font-size: 15px;
+  
+  /* 15px 字體 */
+  font-size: 15px; 
   line-height: 1.5;
   font-family: inherit;
+  
   min-height: 24px;
   margin-bottom: 10px;
   background: transparent;
   color: var(--threads-black);
   padding: 0;
+  
+  /* 強制換行 */
+  word-break: break-all; 
+  white-space: pre-wrap;
+  letter-spacing: 0;
 }
 
 #wysiwyg-input::placeholder {
@@ -140,9 +177,9 @@ h2 {
 /* 圖片預覽網格 */
 .preview-images-grid {
   display: grid;
-  gap: 5px;
+  gap: 4px;
   margin-bottom: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
 }
 
 .preview-images-grid .img-wrapper {
@@ -160,17 +197,17 @@ h2 {
 
 .post-actions {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   margin-top: 5px;
   margin-bottom: 20px;
   color: #333;
 }
 .action-icon {
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
 }
 
-/* --- 側邊欄 (預設樣式) --- */
+/* --- 側邊工具欄 (含釘選特效) --- */
 .tools-sidebar {
   width: 300px;
   background: #fff;
@@ -178,6 +215,11 @@ h2 {
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   height: fit-content;
+
+  /* ⚠️ 釘選特效：讓工具欄滑動時跟著走 */
+  position: sticky;
+  top: 20px; 
+  z-index: 100;
 }
 
 .tools-section {
@@ -229,6 +271,7 @@ button {
 }
 .btn-secondary:hover { background-color: #e0e0e0; }
 
+/* Toast */
 .toast {
   position: fixed;
   bottom: 20px;
@@ -247,30 +290,28 @@ button {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* --- 📱 重點修改：手機版專用樣式 --- */
-@media screen and (max-width: 850px) {
+/* --- RWD 手機版設定 --- */
+@media screen and (max-width: 800px) {
   body {
-    padding: 10px; /* 手機版減少邊距 */
+    padding: 10px;
   }
 
   .wysiwyg-container {
-    flex-direction: column; /* 改為直向排列 */
-    align-items: center;    /* 水平置中對齊 */
+    flex-direction: column;
+    align-items: center; /* 手機版改回置中對齊 */
     gap: 20px;
   }
-
-  /* 手機模擬區在手機上 */
+  
   .phone-mockup {
-    width: 100%; /* 佔滿可用寬度 */
-    max-width: 100%; /* 防止超出螢幕 */
-    height: 75vh; /* 高度改為視窗高度的 75%，避免太長 */
-    border-width: 2px; /* 邊框變細，比較好看 */
-    border-radius: 20px;
+    width: 375px;
+    max-width: 100%; 
+    height: 80vh; 
+    margin: 0; /* 手機版也不要有 margin */
   }
 
-  /* 工具欄在手機上 */
   .tools-sidebar {
-    width: 100%; /* 工具欄滿版 */
-    box-sizing: border-box; /* 確保 padding 不會撐爆寬度 */
+    width: 100%;
+    max-width: 375px; 
+    position: static; /* 手機版不需要 sticky */
   }
 }
